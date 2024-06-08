@@ -5,7 +5,7 @@ import requests
 from datetime import datetime
 
 def get_current_weather(city):
-    api_key = "d5333f2d6478120a6bbb2ca1950eb380"  # Замените на ваш API ключ!!!
+    api_key = "d5333f2d6478120a6bbb2ca1950eb380"  # Замените на ваш API ключ!!! Replace with your API key!!!
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric&lang=ru"
     response = requests.get(weather_url)
 
