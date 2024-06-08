@@ -4,10 +4,8 @@ from PIL import Image, ImageTk
 import requests
 from datetime import datetime
 
-
-# Функция для получения текущих данных о погоде
 def get_current_weather(city):
-    api_key = "d5333f2d6478120a6bbb2ca1950eb380"  # Замените на ваш API ключ
+    api_key = "d5333f2d6478120a6bbb2ca1950eb380"  # Замените на ваш API ключ!!!
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric&lang=ru"
     response = requests.get(weather_url)
 
@@ -20,25 +18,21 @@ def get_current_weather(city):
         return "Не удалось получить данные о погоде."
 
 
-# Функция для отображения текущих данных о погоде
 def show_current_weather(event=None):
     city = city_entry.get()
     if city:
         weather_info = get_current_weather(city)
         result_label.config(text=weather_info)
 
-        # Сохранение данных о погоде в файл
         with open("weather_log.txt", "a") as file:
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             file.write(f"Дата и время запроса: {current_time}\nГород: {city}\n{weather_info}\n\n")
 
-        # Отображение сохраненных данных
         display_saved_weather()
     else:
         messagebox.showerror("Ошибка", "Пожалуйста, введите название города")
 
 
-# Функция для отображения сохраненных данных о погоде
 def display_saved_weather():
     text_area.delete("1.0", tk.END)
     try:
@@ -49,12 +43,10 @@ def display_saved_weather():
         messagebox.showerror("Ошибка", "Файл сохраненных данных о погоде не найден.")
 
 
-# Создание основного окна
 root = tk.Tk()
-root.title("Погодное приложение")
+root.title("Погода")
 root.geometry("900x1000")
 
-# Загрузка фонового изображения с использованием Pillow
 try:
     image = Image.open("bg.png")
     background_image = ImageTk.PhotoImage(image)
@@ -63,15 +55,14 @@ try:
 except Exception as e:
     messagebox.showerror("Ошибка", f"Ошибка загрузки изображения: {e}")
 
-# Создание и размещение виджетов
 frame = tk.Frame(root, bg='#80c1ff', bd=5)
 frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.1, anchor='n')
 
 city_entry = tk.Entry(frame, font=('Helvetica', 14, 'bold'), fg='#666666', justify='center')
-city_entry.insert(0, 'Введите желаемый город')  # Вставляем текст по умолчанию
-city_entry.bind("<FocusIn>", lambda event: city_entry.delete(0, tk.END))  # Удаление текста при фокусировке
+city_entry.insert(0, 'Введите желаемый город')
+city_entry.bind("<FocusIn>", lambda event: city_entry.delete(0, tk.END))
 city_entry.bind("<FocusOut>", lambda event: city_entry.insert(0,
-                                                              'Введите желаемый город'))  # Вставляем текст, если поле остается пустым
+                                                              'Введите желаемый город'))
 city_entry.place(relwidth=0.65, relheight=1)
 
 search_button = tk.Button(frame, text="Показать погоду", font=('Helvetica', 12, 'bold'), fg='white', bg='#007BFF',
@@ -88,5 +79,4 @@ result_label.place(relwidth=1, relheight=0.5)
 text_area = Text(lower_frame, font=('Helvetica', 10), wrap=tk.WORD)
 text_area.place(relx=0, rely=0.5, relwidth=1, relheight=0.5)
 
-# Запуск основного цикла приложения
 root.mainloop()
